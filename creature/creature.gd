@@ -22,6 +22,7 @@ var _target: Vector3     = Vector3.ZERO
 var _idle_timer: float   = 0.0
 var _facing: float       = 0.0
 var _brain_walk: bool    = false  # true when walking to a brain-commanded position
+var _paused: bool        = false  # true when user is AFK; suppresses random wandering
 
 
 func _ready() -> void:
@@ -50,10 +51,27 @@ func command_wander() -> void:
 		_set_state(State.IDLE)
 
 
+# Stop all wandering until command_resume() is called (used when user is AFK).
+func command_pause() -> void:
+	_paused = true
+	if state == State.WALKING and not _brain_walk:
+		speed = 0.0
+		_set_state(State.IDLE)
+		_idle_timer = INF
+
+
+func command_resume() -> void:
+	_paused = false
+	if not _brain_walk:
+		_pick_idle()
+
+
 # --- Internal ---
 
 func _tick_idle(delta: float) -> void:
 	speed = move_toward(speed, 0.0, ACCEL * delta)
+	if _paused:
+		return
 	_idle_timer -= delta
 	if _idle_timer <= 0.0:
 		_start_wander()

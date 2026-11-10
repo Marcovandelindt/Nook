@@ -92,6 +92,13 @@ func _sphere(radius: float, color: Color) -> MeshInstance3D:
 	return mi
 
 
+func play_happy_reaction() -> void:
+	var t: Tween = create_tween()
+	t.tween_property(self, "scale:y", 1.35, 0.10).set_ease(Tween.EASE_OUT)
+	t.tween_property(self, "scale:y", 1.00, 0.35) \
+		.set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_BOUNCE)
+
+
 func _mat(color: Color) -> StandardMaterial3D:
 	var mat := StandardMaterial3D.new()
 	mat.albedo_color = color

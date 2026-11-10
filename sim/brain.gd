@@ -1,10 +1,11 @@
 class_name Brain
 extends Node
 
-const ClockScript := preload("res://core/sim_clock.gd")
-const Creature    := preload("res://creature/creature.gd")
-const Needs       := preload("res://sim/needs.gd")
-const SmartObject := preload("res://objects/smart_object.gd")
+const ClockScript  := preload("res://core/sim_clock.gd")
+const Creature     := preload("res://creature/creature.gd")
+const Needs        := preload("res://sim/needs.gd")
+const SmartObject  := preload("res://objects/smart_object.gd")
+const TimeOfDay    := preload("res://core/time_of_day.gd")
 
 # Base score for the "just wander" option.
 # Objects need to beat this to be chosen.
@@ -15,15 +16,17 @@ var last_scores: Array[Dictionary] = []
 
 var _needs: Needs
 var _creature: Creature
+var _time_of_day: TimeOfDay
 var _current_object: SmartObject = null
 var _using: bool      = false
 var _use_elapsed: float = 0.0
 var _eval_timer: float  = 0.0
 
 
-func setup(creature: Creature, needs: Needs) -> void:
-	_creature = creature
-	_needs    = needs
+func setup(creature: Creature, needs: Needs, time_of_day: TimeOfDay) -> void:
+	_creature     = creature
+	_needs        = needs
+	_time_of_day  = time_of_day
 	_creature.arrived.connect(_on_arrived)
 
 
@@ -102,14 +105,25 @@ func _evaluate() -> void:
 func _score(obj: SmartObject) -> float:
 	var need_score: float = 0.0
 	for need_name: String in obj.definition.gains:
-		var urgency: float   = _needs.urgency(need_name)
-		var gain: float      = obj.definition.gains[need_name]
+		var urgency: float = _needs.urgency(need_name)
+		# Boost energy urgency at night so the creature prefers sleeping
+		if need_name == "energy" and _time_of_day != null:
+			urgency *= _time_of_day.get_sleepiness_factor()
+		var gain: float = obj.definition.gains[need_name]
 		need_score += urgency * gain * obj.definition.use_duration
 
 	var dist: float          = _creature.global_position.distance_to(obj.get_interact_position())
 	var dist_factor: float   = 1.0 / (1.0 + dist)
 	var noise: float         = randf_range(0.9, 1.1)
 	return need_score * dist_factor * noise
+
+
+func on_went_afk() -> void:
+	_creature.command_pause()
+
+
+func on_returned() -> void:
+	_creature.command_resume()
 
 
 func _on_arrived() -> void:
