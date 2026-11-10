@@ -1,6 +1,7 @@
 class_name Brain
 extends Node
 
+const ClockScript := preload("res://core/sim_clock.gd")
 const Creature    := preload("res://creature/creature.gd")
 const Needs       := preload("res://sim/needs.gd")
 const SmartObject := preload("res://objects/smart_object.gd")
@@ -27,7 +28,8 @@ func setup(creature: Creature, needs: Needs) -> void:
 
 
 func _ready() -> void:
-	Clock.ticked.connect(_on_tick)
+	var clock: ClockScript = get_node("/root/Clock")
+	clock.ticked.connect(_on_tick)
 
 
 func get_status() -> String:

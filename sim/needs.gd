@@ -1,6 +1,8 @@
 class_name Needs
 extends Node
 
+const ClockScript := preload("res://core/sim_clock.gd")
+
 signal changed(need: StringName, value: float)
 
 # Decay rates in units per simulated second.
@@ -17,7 +19,8 @@ var social: float = 65.0
 
 
 func _ready() -> void:
-	Clock.ticked.connect(_on_tick)
+	var clock: ClockScript = get_node("/root/Clock")
+	clock.ticked.connect(_on_tick)
 
 
 func _on_tick(sim_delta: float) -> void:

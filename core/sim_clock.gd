@@ -1,4 +1,3 @@
-class_name SimClock
 extends Node
 
 signal ticked(sim_delta: float)

@@ -1,12 +1,14 @@
 class_name DebugOverlay
 extends CanvasLayer
 
-const Needs := preload("res://sim/needs.gd")
-const Brain := preload("res://sim/brain.gd")
+const ClockScript := preload("res://core/sim_clock.gd")
+const Needs       := preload("res://sim/needs.gd")
+const Brain       := preload("res://sim/brain.gd")
 
-var _label: Label
-var _needs: Needs
-var _brain: Brain
+var _label:  Label
+var _needs:  Needs
+var _brain:  Brain
+var _clock:  ClockScript
 
 
 func setup(needs: Needs, brain: Brain) -> void:
@@ -15,6 +17,8 @@ func setup(needs: Needs, brain: Brain) -> void:
 
 
 func _ready() -> void:
+	_clock = get_node("/root/Clock")
+
 	_label = Label.new()
 	_label.position = Vector2(10.0, 10.0)
 	_label.add_theme_font_size_override("font_size", 14)
@@ -38,15 +42,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_F1:
 			visible = not visible
 		KEY_1:
-			Clock.time_scale = 1.0
+			_clock.time_scale = 1.0
 		KEY_2:
-			Clock.time_scale = 10.0
+			_clock.time_scale = 10.0
 		KEY_3:
-			Clock.time_scale = 60.0
+			_clock.time_scale = 60.0
 
 
 func _build_text() -> String:
-	var ts: float = Clock.time_scale
+	var ts: float = _clock.time_scale
 	var lines: PackedStringArray
 	lines.append("=== NOOK DEBUG  [F1 hide] ===")
 	lines.append("Time scale: %.0fx    [1] 1x  [2] 10x  [3] 60x" % ts)
