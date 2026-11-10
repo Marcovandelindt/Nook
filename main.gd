@@ -1,6 +1,8 @@
 extends Node3D
 
-const RoomView := preload("res://room/room_view.gd")
+const RoomView     := preload("res://room/room_view.gd")
+const Creature     := preload("res://creature/creature.gd")
+const CreatureView := preload("res://creature/creature_view.gd")
 
 
 func _ready() -> void:
@@ -8,6 +10,7 @@ func _ready() -> void:
 	_setup_camera()
 	_setup_lighting()
 	_add_room()
+	_add_creature()
 
 
 func _setup_world() -> void:
@@ -42,3 +45,10 @@ func _setup_lighting() -> void:
 func _add_room() -> void:
 	var room := RoomView.new()
 	add_child(room)
+
+
+func _add_creature() -> void:
+	var creature := Creature.new()
+	var view     := CreatureView.new()
+	creature.add_child(view)
+	add_child(creature)
