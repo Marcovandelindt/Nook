@@ -17,7 +17,7 @@ var social: float = 65.0
 
 
 func _ready() -> void:
-	SimClock.ticked.connect(_on_tick)
+	Clock.ticked.connect(_on_tick)
 
 
 func _on_tick(sim_delta: float) -> void:

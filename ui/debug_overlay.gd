@@ -38,15 +38,15 @@ func _unhandled_input(event: InputEvent) -> void:
 		KEY_F1:
 			visible = not visible
 		KEY_1:
-			SimClock.time_scale = 1.0
+			Clock.time_scale = 1.0
 		KEY_2:
-			SimClock.time_scale = 10.0
+			Clock.time_scale = 10.0
 		KEY_3:
-			SimClock.time_scale = 60.0
+			Clock.time_scale = 60.0
 
 
 func _build_text() -> String:
-	var ts: float = SimClock.time_scale
+	var ts: float = Clock.time_scale
 	var lines: PackedStringArray
 	lines.append("=== NOOK DEBUG  [F1 hide] ===")
 	lines.append("Time scale: %.0fx    [1] 1x  [2] 10x  [3] 60x" % ts)

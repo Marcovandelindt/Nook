@@ -27,7 +27,7 @@ window/stretch/aspect="expand"
 
 [autoload]
 
-SimClock="*res://core/sim_clock.gd"
+Clock="*res://core/sim_clock.gd"
 
 [rendering]
 

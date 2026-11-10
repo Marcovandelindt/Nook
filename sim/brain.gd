@@ -27,7 +27,7 @@ func setup(creature: Creature, needs: Needs) -> void:
 
 
 func _ready() -> void:
-	SimClock.ticked.connect(_on_tick)
+	Clock.ticked.connect(_on_tick)
 
 
 func get_status() -> String:
