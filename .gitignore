@@ -3,6 +3,10 @@
 /android/
 *.translation
 export_presets.cfg
+*.gd.uid
+
+# Claude Code
+.claude/
 
 # OS
 Thumbs.db
