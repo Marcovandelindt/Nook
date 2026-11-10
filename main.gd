@@ -9,7 +9,8 @@ const SmartObject      := preload("res://objects/smart_object.gd")
 const ObjectDefinition := preload("res://objects/object_definition.gd")
 const DebugOverlay     := preload("res://ui/debug_overlay.gd")
 const TimeOfDay        := preload("res://core/time_of_day.gd")
-const PresenceDetector := preload("res://core/presence_detector.gd")
+const PresenceDetector   := preload("res://core/presence_detector.gd")
+const CameraController   := preload("res://ui/camera_controller.gd")
 
 var _sun: DirectionalLight3D
 var _lamp: OmniLight3D
@@ -52,10 +53,8 @@ func _setup_world() -> void:
 
 
 func _setup_camera() -> void:
-	var camera := Camera3D.new()
-	camera.position = Vector3(5.0, 8.0, 8.0)
+	var camera := CameraController.new()
 	add_child(camera)
-	camera.look_at(Vector3(0.0, 1.0, 0.0))
 
 
 func _setup_lighting() -> void:
